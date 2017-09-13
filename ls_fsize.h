@@ -1,7 +1,6 @@
 #ifndef _LS_FSIZE_H_
 #define _LS_FSIZE_H_
 
-// #include <stdio.h>
 #include <cstdio>
 #include <iostream>
 #include <string.h>
@@ -9,6 +8,9 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <limits.h>
+#include <grp.h>
+#include <pwd.h>
 using namespace std;
 
 class infoFile
@@ -18,19 +20,23 @@ class infoFile
 
 	public:
 		infoFile(char *file);
-		virtual void showInfo();
+		void showFile();
 			
 };
 
 class infoDir : public infoFile
 {
 	private:
-		DIR *dp;
-		struct dirent *dirp;
-			
+		DIR *pD;
+		struct dirent *pDir;
+		struct passwd *pwd;
+		struct group *pgrgid;
+		char *dirName;
+		char pathName[PATH_MAX];
+		struct stat path;	
 	public:
 		infoDir(char *dir);
-		virtual void showInfo();
+		void showDir();
 };	
 
 

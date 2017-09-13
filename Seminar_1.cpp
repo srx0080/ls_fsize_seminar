@@ -4,11 +4,11 @@ int main (int argc, char **argv)
 {
 	if(!strcmp(argv[1], "ls")) {
 		infoDir infodir(argv[2]);
-		infodir.showInfo();	
+		infodir.showDir();	
 		}
 	else if (!strcmp(argv[1], "fsize")) {
 		infoFile infofile(argv[2]);
-		infofile.showInfo();
+		infofile.showFile();
 		}
 	else {
 		return 0;
