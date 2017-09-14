@@ -16,11 +16,12 @@ using namespace std;
 class infoFile
 {
 	private:
+        char *fileName;
 		struct stat fileStat;
 
 	public:
 		infoFile(char *file);
-		void showFile();
+		void showFile(char *convert);
 			
 };
 
@@ -36,7 +37,7 @@ class infoDir : public infoFile
 		struct stat path;	
 	public:
 		infoDir(char *dir);
-		void showDir();
+        void showDir(char *detail);
 };	
 
 
