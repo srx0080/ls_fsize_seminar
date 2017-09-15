@@ -21,7 +21,7 @@ class infoFile
 
 	public:
 		infoFile(char *file);
-		void showFile(char *convert);
+		virtual void showInfo(char *convert);
 			
 };
 
@@ -37,7 +37,7 @@ class infoDir : public infoFile
 		struct stat path;	
 	public:
 		infoDir(char *dir);
-        void showDir(char *detail);
+        virtual void showInfo(char *detail);
 };	
 
 
