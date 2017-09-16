@@ -17,10 +17,18 @@ class infoFile
 {
 	private:
         char *fileName;
+        char *time; //to eliminate "\n" from the string of modification time
 		struct stat fileStat;
+        struct passwd *pwd;
+        struct group *pgrgid;
 
 	public:
-		infoFile(char *file);
+		infoFile();
+        ~infoFile();
+        void addInfo(char *file);
+        void simpleInfo(char *command);
+        void detailInfo();
+        virtual void showName();
 		virtual void showInfo(char *convert);
 			
 };
@@ -30,14 +38,15 @@ class infoDir : public infoFile
 	private:
 		DIR *pD;
 		struct dirent *pDir;
-		struct passwd *pwd;
-		struct group *pgrgid;
-		char *dirName;
-		char pathName[PATH_MAX];
-		struct stat path;	
+        char *dirName;
+        char pathName[PATH_MAX];
 	public:
-		infoDir(char *dir);
-        virtual void showInfo(char *detail);
+		infoDir();
+        ~infoDir();
+        void addDir(char *dir);
+        void addPath(char *path);
+        virtual void showName();
+        virtual void showInfo(char *convert);
 };	
 
 

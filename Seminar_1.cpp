@@ -9,21 +9,25 @@ int main (int argc, char **argv)
     
 	if(!strcmp(argv[1], "ls")) {
         if(argc == 3) {
-            infoDir infodir(argv[2]);
+            infoDir infodir;
+            infodir.addDir(argv[2]);
             infodir.showInfo(NULL);	
         }
         else if(argc == 4) {
-            infoDir infodir(argv[3]);
+            infoDir infodir;
+            infodir.addDir(argv[3]);
             infodir.showInfo(argv[2]);
         }
     }
 	else if (!strcmp(argv[1], "fsize")) {
         if(argc == 3) {
-            infoFile infofile(argv[2]);
+            infoFile infofile;
+            infofile.addInfo(argv[2]);
             infofile.showInfo(NULL);
 		}
         else if(argc == 4) {
-            infoFile infofile(argv[3]);
+            infoFile infofile;
+            infofile.addInfo(argv[3]);
             infofile.showInfo(argv[2]);
         }
         else {
