@@ -29,6 +29,7 @@ class infoFile
         void simpleInfo(char *command);
         void detailInfo();
         void showName(char *name);
+        void detailShow(char *file);
 		virtual void showInfo(char *command);
 			
 };
@@ -46,7 +47,7 @@ class infoDir : public infoFile
 		infoDir();
         ~infoDir();
         void addDirInfo(char *dir);
-        void pathDirInfo(char *path);
+        void dirPathInfo(char *path);
         virtual void showInfo(char *command);
 };	
 

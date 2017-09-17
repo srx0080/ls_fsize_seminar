@@ -1,6 +1,7 @@
 #include "ls_fsize.h"
 
 //======================New Defined for sorting technique============
+//======================related to file==============================
 infoFile::infoFile() : fileName(NULL), time(NULL), fileStat({}), pwd(NULL), pgrgid(NULL)
 {};
 
@@ -25,11 +26,12 @@ void infoFile::showInfo(char *command) {
 };
 // print file size and convert byte to kbyte
 void infoFile::simpleInfo(char *command) {
-    if ((command != NULL) && !strcmp(command, "h"))
+    if ((command != NULL) && (strcmp(command, "h") == 0))
         cout << "\t" << fileStat.st_size/(float)1000 << "kbyte" << endl;
     else  
         cout << "\t" << fileStat.st_size << "byte" << endl;
 };
+
 void infoFile::detailInfo() {
     //To show detail Information about fileStat
     //file type
@@ -66,6 +68,14 @@ void infoFile::detailInfo() {
     cout << "\t" << time;
 };
 
+void infoFile::detailShow(char * file) {
+                detailInfo();
+                showName(file);
+                simpleInfo(NULL); 
+};
+
+//=====================related to directory============
+
 infoDir::infoDir() : pD(NULL), pDir(NULL), iterDir(0), i(0), dirName(NULL), pathName("")
 {};
 
@@ -78,20 +88,33 @@ void infoDir::addDirInfo(char *dir) {
     iterDir = scandir(dir, &pDir, NULL, alphasort);
 };
 
-void infoDir::pathDirInfo(char *path) {
-    sprintf(pathName, "%s%s", dirName, path);
+void infoDir::dirPathInfo(char *path) {
+    sprintf(pathName, "%s/%s", dirName, path);
 };
 
 void infoDir::showInfo(char *command) {
-    for (i = 2; i < iterDir ; ++i) {
+    // ls to a file
+    if (pDir == NULL) {
+        addInfo(dirName);
         if (command == NULL)
-            showName(pDir[i]->d_name);
-        else if (strcmp(command, "l") == 0) {
-            pathDirInfo(pDir[i]->d_name);
-            addInfo(pathName);
-            detailInfo();
-            showName(pDir[i]->d_name);
-            simpleInfo(NULL); 
+            showName(dirName);
+        else if (strcmp(command, "l") == 0)
+            detailShow(dirName);
+        else
+            return;
+    }
+    // ls to a directory
+    else {
+        for (i = 2; i < iterDir ; ++i) {
+            if (command == NULL)
+                showName(pDir[i]->d_name);
+            else if (strcmp(command, "l") == 0) {
+                dirPathInfo(pDir[i]->d_name);
+                addInfo(pathName);
+                detailShow(pDir[i]->d_name);
+            }
+            else
+                return;
         }
     }
 }; 
