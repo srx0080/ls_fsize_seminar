@@ -26,11 +26,11 @@ class infoFile
 		infoFile();
         ~infoFile();
         void addInfo(char *file);
-        void simpleInfo(char *command);
+        void simpleInfo(const char *command);
         void detailInfo();
-        void showName(char *name);
-        void detailShow(char *file);
-		virtual void showInfo(char *command);
+        void showName(const char *name);
+        void detailShow(const char *file);
+		virtual void showInfo(const char *command);
 			
 };
 
@@ -47,8 +47,8 @@ class infoDir : public infoFile
 		infoDir();
         ~infoDir();
         void addDirInfo(char *dir);
-        void dirPathInfo(char *path);
-        virtual void showInfo(char *command);
+        void dirPathInfo(const char *path);
+        virtual void showInfo(const char *command);
 };	
 
 

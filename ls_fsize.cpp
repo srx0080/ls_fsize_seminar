@@ -13,19 +13,19 @@ void infoFile::addInfo(char * file) {
     stat(file, &fileStat);
 };
 
-void infoFile::showName(char *name) {
+void infoFile::showName(const char *name) {
     if ((strcmp(name, ".") == 0) || (strcmp(name, "..") == 0))
     {}
     else
         cout << "\t" << name << "\t";
 };
 
-void infoFile::showInfo(char *command) {
+void infoFile::showInfo(const char *command) {
     showName(fileName);
     simpleInfo(command);
 };
 // print file size and convert byte to kbyte
-void infoFile::simpleInfo(char *command) {
+void infoFile::simpleInfo(const char *command) {
     if ((command != NULL) && (strcmp(command, "h") == 0))
         cout << "\t" << fileStat.st_size/(float)1000 << "kbyte" << endl;
     else  
@@ -68,7 +68,7 @@ void infoFile::detailInfo() {
     cout << "\t" << time;
 };
 
-void infoFile::detailShow(char * file) {
+void infoFile::detailShow(const char * file) {
                 detailInfo();
                 showName(file);
                 simpleInfo(NULL); 
@@ -88,11 +88,11 @@ void infoDir::addDirInfo(char *dir) {
     iterDir = scandir(dir, &pDir, NULL, alphasort);
 };
 
-void infoDir::dirPathInfo(char *path) {
+void infoDir::dirPathInfo(const char *path) {
     sprintf(pathName, "%s/%s", dirName, path);
 };
 
-void infoDir::showInfo(char *command) {
+void infoDir::showInfo(const char *command) {
     // ls to a file
     if (pDir == NULL) {
         addInfo(dirName);
