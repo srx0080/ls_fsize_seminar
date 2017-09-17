@@ -1,24 +1,37 @@
 #include "ls_fsize.h"
 
-infoFile::infoFile() : fileName(NULL), fileStat({}), pwd(NULL), pgrgid(NULL)
+//======================New Defined for sorting technique============
+infoFile::infoFile() : fileName(NULL), time(NULL), fileStat({}), pwd(NULL), pgrgid(NULL)
 {};
 
-infoFile::~infoFile() 
+infoFile::~infoFile()
 {};
 
-void infoFile::addInfo(char *file) {
+void infoFile::addInfo(char * file) {
     fileName = file;
     stat(file, &fileStat);
 };
 
-void infoFile::simpleInfo(char *convert) {
-    if ((convert != NULL) && !strcmp(convert, "h"))
+void infoFile::showName(char *name) {
+    if ((strcmp(name, ".") == 0) || (strcmp(name, "..") == 0))
+    {}
+    else
+        cout << "\t" << name << "\t";
+};
+
+void infoFile::showInfo(char *command) {
+    showName(fileName);
+    simpleInfo(command);
+};
+// print file size and convert byte to kbyte
+void infoFile::simpleInfo(char *command) {
+    if ((command != NULL) && !strcmp(command, "h"))
         cout << "\t" << fileStat.st_size/(float)1000 << "kbyte" << endl;
     else  
         cout << "\t" << fileStat.st_size << "byte" << endl;
 };
-
 void infoFile::detailInfo() {
+    //To show detail Information about fileStat
     //file type
     switch (fileStat.st_mode & S_IFMT) {
         case S_IFBLK: cout << "b"; break;
@@ -53,60 +66,32 @@ void infoFile::detailInfo() {
     cout << "\t" << time;
 };
 
-void infoFile::showName() {
-    cout << "\t" << fileName << "\t";
-};
-
-void infoFile::showInfo(char *convert) {
-    showName();
-    simpleInfo(convert);
-};
-    
-
-infoDir::infoDir() : infoFile(), pD(NULL), pDir(NULL), dirName(NULL), pathName("")
+infoDir::infoDir() : pD(NULL), pDir(NULL), iterDir(0), i(0), dirName(NULL), pathName("")
 {};
 
-infoDir::~infoDir() {
-    closedir(pD);
-};
+infoDir::~infoDir()
+{};
 
-void infoDir::addDir(char *dir) {
-    pD = opendir(dir);
-    pDir = readdir(pD);
+void infoDir::addDirInfo(char *dir) {
+    // add a dirctory information to pDir
     dirName = dir;
-    addInfo(dir);
+    iterDir = scandir(dir, &pDir, NULL, alphasort);
 };
 
-void infoDir::addPath(char *path) {
+void infoDir::pathDirInfo(char *path) {
     sprintf(pathName, "%s%s", dirName, path);
 };
 
-void infoDir::showName() {
-    if ((strcmp(pDir->d_name, ".") == 0) || (strcmp(pDir->d_name, "..") == 0))
-    {}
-    else
-        cout << "\t" << pDir->d_name << "\t";
-};
-
-
-void infoDir::showInfo(char *convert) {
-    if (pD == NULL) {
-        simpleInfo(NULL);
-    }
-	else {
-		while ((pDir = readdir(pD)) != NULL) {
-            if (convert == NULL) {
-                showName();
-            }
-            else if (strcmp(convert, "l") == 0) {
-                addPath(pDir->d_name);
-                addInfo(pathName);
-                detailInfo();
-                showName();
-                simpleInfo(NULL);
-            }
-            else
-                return;
+void infoDir::showInfo(char *command) {
+    for (i = 2; i < iterDir ; ++i) {
+        if (command == NULL)
+            showName(pDir[i]->d_name);
+        else if (strcmp(command, "l") == 0) {
+            pathDirInfo(pDir[i]->d_name);
+            addInfo(pathName);
+            detailInfo();
+            showName(pDir[i]->d_name);
+            simpleInfo(NULL); 
         }
     }
-};
+}; 

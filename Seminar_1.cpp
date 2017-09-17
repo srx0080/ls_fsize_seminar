@@ -10,12 +10,12 @@ int main (int argc, char **argv)
 	if(!strcmp(argv[1], "ls")) {
         if(argc == 3) {
             infoDir infodir;
-            infodir.addDir(argv[2]);
+            infodir.addDirInfo(argv[2]);
             infodir.showInfo(NULL);	
         }
         else if(argc == 4) {
             infoDir infodir;
-            infodir.addDir(argv[3]);
+            infodir.addDirInfo(argv[3]);
             infodir.showInfo(argv[2]);
         }
     }

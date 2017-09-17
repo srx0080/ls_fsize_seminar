@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <sys/stat.h>
-#include <unistd.h>
-#include <limits.h>
+#include <unistd.h> //To Use POSIX Units
+#include <limits.h> //To Use Other Limit Units
 #include <grp.h>
 #include <pwd.h>
 using namespace std;
@@ -28,8 +28,8 @@ class infoFile
         void addInfo(char *file);
         void simpleInfo(char *command);
         void detailInfo();
-        virtual void showName();
-		virtual void showInfo(char *convert);
+        void showName(char *name);
+		virtual void showInfo(char *command);
 			
 };
 
@@ -37,16 +37,17 @@ class infoDir : public infoFile
 {
 	private:
 		DIR *pD;
-		struct dirent *pDir;
+		struct dirent **pDir;
+        int iterDir;
+        int i;
         char *dirName;
         char pathName[PATH_MAX];
 	public:
 		infoDir();
         ~infoDir();
-        void addDir(char *dir);
-        void addPath(char *path);
-        virtual void showName();
-        virtual void showInfo(char *convert);
+        void addDirInfo(char *dir);
+        void pathDirInfo(char *path);
+        virtual void showInfo(char *command);
 };	
 
 
