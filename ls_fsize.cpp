@@ -10,7 +10,7 @@ infoFile::~infoFile()
 
 void infoFile::addInfo(char * file) {
     fileName = file;
-    stat(file, &fileStat);
+    lstat(file, &fileStat);
 };
 
 void infoFile::showName(const char *name) {
