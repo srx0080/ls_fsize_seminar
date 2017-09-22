@@ -13,28 +13,28 @@
 #include <pwd.h>
 using namespace std;
 
-class infoFile
+//Information Factory class
+class Info 
+{
+    public:
+        virtual void addInfo() = 0;
+        virtual void showInfo() = 0;
+};
+
+class infoFile : public Info
 {
 	private:
         char *fileName;
-        char *time; //to eliminate "\n" from the string of modification time
 		struct stat fileStat;
-        struct passwd *pwd;
-        struct group *pgrgid;
 
 	public:
 		infoFile();
         ~infoFile();
-        void addInfo(char *file);
-        void simpleInfo(const char *command);
-        void detailInfo();
-        void showName(const char *name);
-        void detailShow(const char *file);
+        virtual void addInfo(char *file);
 		virtual void showInfo(const char *command);
-			
 };
 
-class infoDir : public infoFile
+class infoDir : public Info
 {
 	private:
 		DIR *pD;
@@ -42,14 +42,27 @@ class infoDir : public infoFile
         int iterDir;
         int i;
         char *dirName;
+        struct stat dirStat;
         char pathName[PATH_MAX];
+        char *time; // to eliminate "\n" from the string of modification time
+        struct passwd *pwd;
+        struct group *pgrgid;
 	public:
 		infoDir();
         ~infoDir();
-        void addDirInfo(char *dir);
-        void dirPathInfo(const char *path);
+        void showPermission(struct stat dir);
+        virtual void addInfo(char *dir);
         virtual void showInfo(const char *command);
 };	
+
+class Factory 
+{
+    public:
+        Info* CreateInfo(string type) {
+            if (type == "dir")
+                return new infoDir();
+        };
+};
 
 
 #else
