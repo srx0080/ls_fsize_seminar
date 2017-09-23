@@ -98,4 +98,10 @@ void infoDir::showInfo(const char *command) {
         }
     }
 };
+
+Info* Create::CreateInfo(string file) {
+    if (file == "file") return new infoFile;
+    if (file == "dir") return new infoDir;
+};
+
 //======================Factory Class================================

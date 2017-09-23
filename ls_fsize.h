@@ -11,14 +11,14 @@
 #include <limits.h> //To Use Other Limit Units
 #include <grp.h>
 #include <pwd.h>
+#include <getopt.h>
 using namespace std;
 
-//Information Factory class
 class Info 
 {
     public:
-        virtual void addInfo() = 0;
-        virtual void showInfo() = 0;
+        virtual void addInfo(char *file) = 0;
+        virtual void showInfo(const char *command) = 0;
 };
 
 class infoFile : public Info
@@ -34,7 +34,7 @@ class infoFile : public Info
 		virtual void showInfo(const char *command);
 };
 
-class infoDir : public Info
+class infoDir : public Info 
 {
 	private:
 		DIR *pD;
@@ -55,16 +55,10 @@ class infoDir : public Info
         virtual void showInfo(const char *command);
 };	
 
-class Factory 
+class Create
 {
     public:
-        Info* CreateInfo(string type) {
-            if (type == "dir")
-                return new infoDir();
-        };
+        virtual Info* CreateInfo(string file);
 };
-
-
 #else
 #endif
-
