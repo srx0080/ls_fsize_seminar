@@ -35,7 +35,7 @@ class Info
 {
     public:
         virtual void addInfo(char *file) = 0;
-        virtual void showInfo(int option) = 0;
+        virtual void showInfo(const int option) = 0;
 };
 
 class infoFile : public Info
@@ -48,7 +48,7 @@ class infoFile : public Info
 		infoFile();
         ~infoFile();
         virtual void addInfo(char *file);
-		virtual void showInfo(int option);
+		virtual void showInfo(const int option);
 };
 
 class infoDir : public Info 
@@ -65,18 +65,18 @@ class infoDir : public Info
         char *time; // to eliminate "\n" from the string of modification time
         struct passwd *pwd;
         struct group *pgrgid;
-        void showPermission(struct stat dir);
+        void showPermission(const struct stat dir);
 	public:
 		infoDir();
         ~infoDir();
         virtual void addInfo(char *file);
-        virtual void showInfo(int option);
+        virtual void showInfo(const int option);
 };	
 
 class Create
 {
     public:
-        virtual Info* CreateInfo(int flag);
+        virtual Info* CreateInfo(const int flag);
 };
 #else
 #endif

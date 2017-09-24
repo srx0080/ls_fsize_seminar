@@ -12,7 +12,7 @@ void infoFile::addInfo(char *file) {
     lstat(file, &fileStat);
 };
 
-void infoFile::showInfo(int option) {
+void infoFile::showInfo(const int option) {
     //Show Name
     if ((strcmp(fileName, ".") == 0) || (strcmp(fileName, "..") == 0))
     {}
@@ -33,7 +33,7 @@ infoDir::infoDir() : pD(NULL), pDir(NULL), iterDir(0), i(0), dirName(NULL), dirS
 infoDir::~infoDir()
 {};
 
-void infoDir::showPermission(struct stat dir) {
+void infoDir::showPermission(const struct stat dir) {
     switch (dir.st_mode & S_IFMT) {
         case S_IFBLK: cout << "b"; break;
         case S_IFCHR: cout << "c"; break;
@@ -80,7 +80,7 @@ void infoDir::addInfo(char *file) {
     }
 };
 
-void infoDir::showInfo(int option) {
+void infoDir::showInfo(const int option) {
     // ls to a file
     if (pDir == NULL) {
         lstat(dirName, &dirStat);
@@ -109,7 +109,7 @@ void infoDir::showInfo(int option) {
     }
 };
 
-Info* Create::CreateInfo(int flag) {
+Info* Create::CreateInfo(const int flag) {
     if (flag == FILE_OPT) return new infoFile;
     if (flag == FOLDER_OPT)  return new infoDir;
     else return NULL;
