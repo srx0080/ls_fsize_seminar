@@ -34,7 +34,7 @@ infoDir::~infoDir()
 {};
 
 void infoDir::showPermission(struct stat dir) {
-   switch (dir.st_mode & S_IFMT) {
+    switch (dir.st_mode & S_IFMT) {
         case S_IFBLK: cout << "b"; break;
         case S_IFCHR: cout << "c"; break;
         case S_IFDIR: cout << "d"; break;
@@ -100,7 +100,10 @@ void infoDir::showInfo(int option) {
                 sprintf(pathName, "%s/%s", dirName, pDir[i]->d_name);
                 lstat(pathName, &dirStat);
                 showPermission(dirStat);
+                cout.flags(ios::left);
+                cout.width(35);
                 cout << pDir[i]->d_name << "\t" << dirStat.st_size << endl;
+
             }
         }
     }
