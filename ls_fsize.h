@@ -1,5 +1,20 @@
 #ifndef _LS_FSIZE_H_
 #define _LS_FSIZE_H_
+//#define FILE_OPT 0
+//#define FOLDER_OPT 1
+//#define NO_OPT 2
+//#define DETAIL 0
+//#define SIMPLE 1
+//#define BYTE 0
+enum {
+    FILE_OPT = 0,
+    FOLDER_OPT,
+    NO_OPT,
+    DETAIL, 
+    SIMPLE, 
+    BYTE, 
+    KBYTE 
+};
 
 #include <cstdio>
 #include <iostream>
@@ -12,13 +27,14 @@
 #include <grp.h>
 #include <pwd.h>
 #include <getopt.h>
+
 using namespace std;
 
 class Info 
 {
     public:
         virtual void addInfo(char *file) = 0;
-        virtual void showInfo(const char *command) = 0;
+        virtual void showInfo(int option) = 0;
 };
 
 class infoFile : public Info
@@ -31,7 +47,7 @@ class infoFile : public Info
 		infoFile();
         ~infoFile();
         virtual void addInfo(char *file);
-		virtual void showInfo(const char *command);
+		virtual void showInfo(int option);
 };
 
 class infoDir : public Info 
@@ -44,6 +60,7 @@ class infoDir : public Info
         char *dirName;
         struct stat dirStat;
         char pathName[PATH_MAX];
+        char currentPath[PATH_MAX];
         char *time; // to eliminate "\n" from the string of modification time
         struct passwd *pwd;
         struct group *pgrgid;
@@ -51,14 +68,14 @@ class infoDir : public Info
 	public:
 		infoDir();
         ~infoDir();
-        virtual void addInfo(char *dir);
-        virtual void showInfo(const char *command);
+        virtual void addInfo(char *file);
+        virtual void showInfo(int option);
 };	
 
 class Create
 {
     public:
-        virtual Info* CreateInfo(char*file);
+        virtual Info* CreateInfo(int flag);
 };
 #else
 #endif

@@ -12,22 +12,22 @@ void infoFile::addInfo(char *file) {
     lstat(file, &fileStat);
 };
 
-void infoFile::showInfo(const char *command) {
+void infoFile::showInfo(int option) {
     //Show Name
     if ((strcmp(fileName, ".") == 0) || (strcmp(fileName, "..") == 0))
     {}
     else
         cout << "\t" << fileName<< "\t";
-    //
     // print file size and convert byte to kbyte
-    if ((command != NULL) && (strcmp(command, "h") == 0))
+    if (option == KBYTE)
         cout << "\t" << fileStat.st_size/(float)1000 << "kbyte" << endl;
-    else  
+    else if (option == BYTE) 
         cout << "\t" << fileStat.st_size << "byte" << endl;
+    else
+        cout << "Command is not defined" << endl;
 };
 //======================related to directory==============================
-infoDir::infoDir() : pD(NULL), pDir(NULL), iterDir(0), i(0), dirName(NULL), dirStat({}), pathName(""),
-    time(NULL), pwd(NULL), pgrgid(NULL)
+infoDir::infoDir() : pD(NULL), pDir(NULL), iterDir(0), i(0), dirName(NULL), dirStat({}), pathName(""), currentPath(""), time(NULL), pwd(NULL), pgrgid(NULL)
 {};
 
 infoDir::~infoDir()
@@ -64,22 +64,29 @@ void infoDir::showPermission(struct stat dir) {
     //Time Spec
     time = ctime(&dir.st_mtime);
     strtok(time, "\n"); //eliminate "\n" from the string of time
-    cout << "\t" << time;
+    cout << "\t" << time << "\t";
 
 };
 
-void infoDir::addInfo(char *dir) {
-    dirName = dir;
-    iterDir = scandir(dir, &pDir, NULL, alphasort);
+void infoDir::addInfo(char *file) {
+    if (file == NULL) {
+        getcwd(currentPath, PATH_MAX);
+        dirName = currentPath;
+        iterDir = scandir(dirName, &pDir, NULL, alphasort);
+    }
+    else {
+        dirName = file;
+        iterDir = scandir(dirName, &pDir, NULL, alphasort);
+    }
 };
 
-void infoDir::showInfo(const char *command) {
+void infoDir::showInfo(int option) {
     // ls to a file
     if (pDir == NULL) {
         lstat(dirName, &dirStat);
-        if (command == NULL) 
+        if (option == SIMPLE) 
             cout << dirName << endl;
-        else if (strcmp(command, "l") == 0) {
+        else if (option == DETAIL) {
             showPermission(dirStat);
             cout << dirStat.st_size << endl;
        }
@@ -87,21 +94,21 @@ void infoDir::showInfo(const char *command) {
     // ls to a directory
     else {
         for (i = 2 ; i < iterDir ; ++i) {
-            if (command == NULL)
+            if (option == SIMPLE)
                 cout << pDir[i]->d_name << endl;
-            else if ((strcmp(command, "l")) == 0) {
+            else if (option == DETAIL) {
                 sprintf(pathName, "%s/%s", dirName, pDir[i]->d_name);
                 lstat(pathName, &dirStat);
                 showPermission(dirStat);
-                cout << dirStat.st_size << endl;
+                cout << pDir[i]->d_name << "\t" << dirStat.st_size << endl;
             }
         }
     }
 };
 
-Info* Create::CreateInfo(char* file) {
-    if ((strcmp(file, "fsize")) == 0) return new infoFile;
-    if ((strcmp(file, "ls")) == 0)  return new infoDir;
+Info* Create::CreateInfo(int flag) {
+    if (flag == FILE_OPT) return new infoFile;
+    if (flag == FOLDER_OPT)  return new infoDir;
     else return NULL;
 };
 
