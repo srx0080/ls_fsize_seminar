@@ -99,9 +99,10 @@ void infoDir::showInfo(const char *command) {
     }
 };
 
-Info* Create::CreateInfo(string file) {
-    if (file == "file") return new infoFile;
-    if (file == "dir") return new infoDir;
+Info* Create::CreateInfo(char* file) {
+    if ((strcmp(file, "fsize")) == 0) return new infoFile;
+    if ((strcmp(file, "ls")) == 0)  return new infoDir;
+    else return NULL;
 };
 
 //======================Factory Class================================

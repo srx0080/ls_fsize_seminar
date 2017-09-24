@@ -47,10 +47,10 @@ class infoDir : public Info
         char *time; // to eliminate "\n" from the string of modification time
         struct passwd *pwd;
         struct group *pgrgid;
+        void showPermission(struct stat dir);
 	public:
 		infoDir();
         ~infoDir();
-        void showPermission(struct stat dir);
         virtual void addInfo(char *dir);
         virtual void showInfo(const char *command);
 };	
@@ -58,7 +58,7 @@ class infoDir : public Info
 class Create
 {
     public:
-        virtual Info* CreateInfo(string file);
+        virtual Info* CreateInfo(char*file);
 };
 #else
 #endif
