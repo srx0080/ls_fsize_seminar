@@ -115,4 +115,3 @@ Info* Create::CreateInfo(const int flag) {
     else return NULL;
 };
 
-//======================Factory Class================================

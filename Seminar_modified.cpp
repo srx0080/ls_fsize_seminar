@@ -3,8 +3,8 @@
 
 int main(int argc, char **argv)
 {
-    int flag= 0;
-    int option_flag = 0;
+    int flag= NO_OPT;
+    int option_flag = NO_OPT;
     int option_command = 0;
     int opt_short;
     Create createInfo;
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
         }
     }
     // Show Information about directory or file
-    if (option_command == NO_OPT)
+    if ((option_command == NO_OPT) || (flag == NO_OPT))
         cout << "Command is not defined" << endl;
     else {
         Info* infor = createInfo.CreateInfo(flag);
